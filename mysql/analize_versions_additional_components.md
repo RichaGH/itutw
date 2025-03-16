@@ -22,8 +22,11 @@ But given that the repo enabling part is wrong, the script would fail to find th
 
 So to fix the repo enabling, the script should parse the major version from the provided version parameter. For example, if the user provides 8.0.26, the major version is 8.0, which corresponds to mysql80-community. Therefore, the line should be dnf config-manager --enable mysql80-community, not using the full version string.
 
-But how to extract the major version from the parameter? The user might input 8.0.26, which is 8.0.x. The major version is 8.0, which in MySQL's repo naming becomes 80 (mysql80-community). So the script needs to convert 8.0.26 to 80. That requires parsing the version string. For example, using something like MYSQL_MAJOR_VERSION=$(echo "$MYSQL_VERSION" | awk -F. '{ printf "%d%d", $1, $2 }'). Then enable mysql${MYSQL_MAJOR_VERSION}-community.
-
+But how to extract the major version from the parameter? The user might input 8.0.26, which is 8.0.x. The major version is 8.0, which in MySQL's repo naming becomes 80 (mysql80-community). So the script needs to convert 8.0.26 to 80. That requires parsing the version string. For example, using something like 
+```
+MYSQL_MAJOR_VERSION=$(echo "$MYSQL_VERSION" | awk -F. '{ printf "%d%d", $1, $2 }').
+Then enable mysql${MYSQL_MAJOR_VERSION}-community.
+```
 But wait, MySQL 5.7 would be 57, 8.0 becomes 80. That makes sense. So the script needs to calculate the major version correctly. If the user inputs 8.0.26, the major version is 8.0, which becomes 80. If they input 5.7.38, it becomes 57.
 
 This is a crucial step that the original script misses. The repo enabling is incorrect, leading to failure in finding the packages.
