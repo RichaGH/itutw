@@ -56,16 +56,16 @@ roles/
 ~~~
 text
 site.yml
-??? - name: Update LGS group
-?     hosts: lgs
-?     serial: 1
-?     roles:
-?       - role: update_services
-?         vars:
-?           service_names: [logstash]
-?           group_name: lgs
-?
-??? - name: Update KAF group
+├── - name: Update LGS group
+│     hosts: lgs
+│     serial: 1
+│     roles:
+│       - role: update_services
+│         vars:
+│           service_names: [logstash]
+│           group_name: lgs
+│
+└── - name: Update KAF group
       hosts: kaf
       serial: 1
       roles:
@@ -101,16 +101,16 @@ site.yml
 
 ```
 deploy_update/
-??? site.yml                     # основной playbook
-??? roles/
-?   ??? update_services/         # универсальная роль обновления
-?   ?   ??? tasks/
-?   ?       ??? main.yml
-?   ??? report/                  # роль для итоговой таблицы
-?       ??? tasks/
-?           ??? main.yml
-??? results.json                 # будет создан автоматически (на control node)
-??? inventory.ini
+├── site.yml                     # основной playbook
+├── roles/
+│   ├── update_services/         # универсальная роль обновления
+│   │   └── tasks/
+│   │       └── main.yml
+│   └── report/                  # роль для итоговой таблицы
+│       └── tasks/
+│           └── main.yml
+├── results.json                 # будет создан автоматически (на control node)
+└── inventory.ini
 ```
 
 ### 1. Основной playbook `site.yml`
